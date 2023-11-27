@@ -1,0 +1,22 @@
+services:
+  producer:
+    build: ./go-producer
+    ports:
+      - '3000:3000'
+    environment:
+      - HTTP_PORT=3000
+      - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
+    volumes:
+      - ./go-producer:/app
+    command: air
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
