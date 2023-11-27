@@ -18,6 +18,9 @@ func main() {
 		panic(err)
 	}
 	producer, err := producer.NewProducer()
+	if err != nil {
+		panic(err)
+	}
 	if err := s.Start(producer); err != nil {
 		panic(err)
 	}

@@ -20,7 +20,7 @@ func NewQueueHandler(queueProducer *producer.Publisher) *queueHandler {
 
 func (qh *queueHandler) TopicOne(w http.ResponseWriter, r *http.Request) error {
 	qh.publisher.Publish(&producer.Message{
-		TopicName: "topic-one",
+		TopicName: "topic.one",
 		Content:   []byte("this is a message to topic one"),
 	})
 	return res.Json(w, http.StatusOK, standardMessage{
@@ -30,7 +30,7 @@ func (qh *queueHandler) TopicOne(w http.ResponseWriter, r *http.Request) error {
 
 func (qh *queueHandler) TopicTwo(w http.ResponseWriter, r *http.Request) error {
 	qh.publisher.Publish(&producer.Message{
-		TopicName: "topic-two",
+		TopicName: "topic.two",
 		Content:   []byte("this is a message to topic one"),
 	})
 	return res.Json(w, http.StatusOK, standardMessage{

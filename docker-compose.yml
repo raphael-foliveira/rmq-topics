@@ -20,3 +20,16 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
+
+  python-consumer:
+    build: ./python-consumer
+    ports:
+      - '5000:5000'
+    environment:
+      - HTTP_PORT=5000
+      - AMQP_URL=amqp://guest:guest@rabbitmq:5672/
+      - AMQP_HOST=rabbitmq
+    volumes:
+      - ./python-consumer:/app
+    depends_on:
+      - rabbitmq
