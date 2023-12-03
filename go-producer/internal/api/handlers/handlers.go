@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"go-producer/internal/api/res"
 	"go-producer/internal/producer"
 	"io"
@@ -48,14 +47,8 @@ func (qh *queueHandler) TopicOne(w http.ResponseWriter, r *http.Request) error {
 	})
 }
 
-type topicTwoMessage struct {
-	Log              string `json:"log"`
-	CriticalityLevel string `json:"criticality_level"`
-}
-
 func (qh *queueHandler) TopicTwo(w http.ResponseWriter, r *http.Request) error {
-	content := topicTwoMessage{}
-	err := json.NewDecoder(r.Body).Decode(&content)
+	contentBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		return &res.HttpError{
 			Status:  http.StatusBadRequest,
@@ -64,7 +57,7 @@ func (qh *queueHandler) TopicTwo(w http.ResponseWriter, r *http.Request) error {
 	}
 	err = qh.publisher.Publish(&producer.Message{
 		TopicName: "topic.two",
-		Content:   []byte("this is a message to topic one"),
+		Content:   contentBytes,
 	})
 	if err != nil {
 		return &res.HttpError{
